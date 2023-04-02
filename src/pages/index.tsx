@@ -1,7 +1,12 @@
+import EventList from '@/components/events/event-list';
+import { getFeaturedEvents } from '@/fake-data';
+
 export default function HomePage() {
+  const featuredEvents = getFeaturedEvents();
+
   return (
     <div>
-      <h1>This is the events home page</h1>
+      <EventList events={featuredEvents} />
     </div>
   );
 }
