@@ -1,9 +1,17 @@
 import EventList from '@/components/events/event-list';
 import { getFeaturedEvents } from '@/helpers/api-util';
+import Head from 'next/head';
 
 export default function HomePage(props: any) {
   return (
     <div>
+      <Head>
+        <title>NextJS Events Portal</title>
+        <meta
+          name="description"
+          content="A fun way to find events related to NextJS..."
+        />
+      </Head>
       <EventList events={props.events} />
     </div>
   );
