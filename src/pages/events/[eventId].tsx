@@ -5,6 +5,7 @@ import { getEventById, getFeaturedEvents } from '@/helpers/api-util';
 import { Fragment } from 'react';
 import Event from '@/models/event';
 import Head from 'next/head';
+import Comments from '@/components/input/comments';
 
 export default function EventDetailPage(props: { event: Event }) {
   const { event } = props;
@@ -33,6 +34,7 @@ export default function EventDetailPage(props: { event: Event }) {
       <EventContent>
         <p>{event.description}</p>
       </EventContent>
+      <Comments eventId={event.id} />
     </Fragment>
   );
 }

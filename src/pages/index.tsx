@@ -1,4 +1,5 @@
 import EventList from '@/components/events/event-list';
+import NewsletterRegistration from '@/components/input/newsletter-registration';
 import { getFeaturedEvents } from '@/helpers/api-util';
 import Head from 'next/head';
 
@@ -12,6 +13,7 @@ export default function HomePage(props: any) {
           content="A fun way to find events related to NextJS..."
         />
       </Head>
+      <NewsletterRegistration />
       <EventList events={props.events} />
     </div>
   );
