@@ -1,12 +1,14 @@
-import { FormEvent, useEffect, useState } from 'react';
+import { FormEvent, useContext, useEffect, useState } from 'react';
 
 import CommentList from './comment-list';
 import NewComment from './new-comment';
 import classes from './comments.module.css';
+import NotificationContext from '@/store/notification-context';
 
 function Comments(props: { eventId: string }) {
   const { eventId } = props;
 
+  const notificationCtx = useContext(NotificationContext);
   const [showComments, setShowComments] = useState(false);
   const [comments, setComments] = useState([]);
 
@@ -21,21 +23,43 @@ function Comments(props: { eventId: string }) {
       }
     }
     fetchData();
-  }, [showComments]);
+  }, [showComments, eventId]);
 
   function toggleCommentsHandler() {
     setShowComments((prevStatus) => !prevStatus);
   }
 
   async function addCommentHandler(commentData: FormEvent) {
-    const response = await fetch(`/api/comments/${eventId}`, {
-      method: 'POST',
-      body: JSON.stringify(commentData),
-      headers: { 'Content-Type': 'application/json' },
+    notificationCtx?.showNotification({
+      title: 'Sending comment!',
+      message: 'Your comment is being saved!',
+      status: 'pending',
     });
 
-    const data = await response.json();
-    console.log(data);
+    try {
+      const response = await fetch(`/api/comments/${eventId}`, {
+        method: 'POST',
+        body: JSON.stringify(commentData),
+        headers: { 'Content-Type': 'application/json' },
+      });
+
+      if (!response.ok) {
+        const data = await response.json();
+        throw new Error(data.message || 'Something went wrong!');
+      }
+
+      notificationCtx?.showNotification({
+        title: 'Success!',
+        message: 'Your comment was saved!',
+        status: 'success',
+      });
+    } catch (error: any) {
+      notificationCtx?.showNotification({
+        title: 'Error!',
+        message: error.message,
+        status: 'error',
+      });
+    }
   }
 
   return (
