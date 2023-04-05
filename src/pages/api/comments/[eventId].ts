@@ -33,7 +33,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 
       const comments = await db
         .collection('comments')
-        .find()
+        .find({ eventId })
         .sort({ _id: -1 })
         .toArray();
 
