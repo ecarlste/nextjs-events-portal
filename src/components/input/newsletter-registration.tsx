@@ -25,7 +25,17 @@ function NewsletterRegistration() {
         headers: { 'Content-Type': 'application/json' },
       });
 
-      const data = await response.json();
+      if (!response.ok) {
+        console.log(response);
+        const data = await response.json();
+        throw new Error(data.message || 'Something went wrong!');
+      }
+
+      notificationCtx?.showNotification({
+        title: 'Success!',
+        message: 'Successfully registered for newsletter!',
+        status: 'success',
+      });
     } catch (error: any) {
       notificationCtx?.showNotification({
         title: 'Error!',
@@ -33,12 +43,6 @@ function NewsletterRegistration() {
         status: 'error',
       });
     }
-
-    notificationCtx?.showNotification({
-      title: 'Success!',
-      message: 'Successfully registered for newsletter!',
-      status: 'success',
-    });
   }
 
   return (
