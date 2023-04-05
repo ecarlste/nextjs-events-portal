@@ -24,17 +24,18 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 
       console.log(`inserting comment: ${JSON.stringify(newComment, null, 2)}`);
       const result = await db.collection('comments').insertOne(newComment);
-      newComment.id = result.insertedId.toString();
-
-      console.log(result);
+      newComment._id = result.insertedId;
 
       res.status(201).json(newComment);
       break;
     case 'GET':
-      const comments = [
-        { id: 'c1', name: 'Max', text: 'Some text here...' },
-        { id: 'c2', name: 'Manuel', text: 'Some more text here...' },
-      ];
+      console.log(`Retrieving all comments for eventId: ${eventId}`);
+
+      const comments = await db
+        .collection('comments')
+        .find()
+        .sort({ _id: -1 })
+        .toArray();
 
       res.status(200).json(comments);
       break;
