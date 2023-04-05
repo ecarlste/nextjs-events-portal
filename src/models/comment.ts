@@ -1,6 +1,7 @@
 export default interface Comment {
-  id: string;
+  id?: string;
   email: string;
   name: string;
   text: string;
+  eventId: string;
 }
